@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org">
 <head th:replace="base :: head-source" >
+    <style>
+        body{
+            background-size: cover;
+            background-color: lightpink;
+        }
+    </style>
     <meta charset="UTF-8" />
     <title>Title</title>
-    <head th:replace="base :: head-source">
-<body class="list-back" >
+</head>
+<body>
 <nav th:replace="base :: main-navbar"></nav>
-<div class="container p-5 bg-light">
 
-    <div class="emptySpace"></div>
+<div class="space"></div>
+
+<div class="container p-5 bg-background">
+
+    <!--<div class="emptySpace"></div>-->
     <h2 class="text-center">Update or Add Department</h2>
     <div class="col-md-6 col-md-offset-3">
         <form action="#"
