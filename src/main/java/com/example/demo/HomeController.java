@@ -1,15 +1,16 @@
 package com.example.demo;
 
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -18,6 +19,9 @@ public class HomeController {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    CloudinaryConfig cloudc;
 
 
     @RequestMapping("/")
@@ -35,13 +39,25 @@ public class HomeController {
     }
 
     @PostMapping("/process")
-    public String processForm(@Valid Employee employee, BindingResult result,
-                              Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("employees", employeeRepository.findAll());
+    public String processForm(@Valid
+                                  @ModelAttribute Employee employee, BindingResult result,@RequestParam("file") MultipartFile file ) {
+
+        if (file.isEmpty()) {
+            return "redirect:/add";
+        }
+        if (result.hasErrors()){
             return "employeeform";
         }
         employeeRepository.save(employee);
+        try {
+            Map uploadResult = cloudc.upload(file.getBytes(),
+                    ObjectUtils.asMap("resourcetype", "auto"));
+            employee.setHeadshot(uploadResult.get("url").toString());
+            employeeRepository.save(employee);
+        }catch (IOException e) {
+            e.printStackTrace();
+            return "redirect:/add";
+        }
         return "redirect:/";
     }
     @GetMapping("/adddepartment")

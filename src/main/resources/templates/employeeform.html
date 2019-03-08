@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org">
-<head>
+<head th:replace="base :: head-source" >
     <meta charset="UTF-8" />
     <title>Title</title>
-</head>
-<body>
+    <head th:replace="base :: head-source">
+<body class="list-back" >
+<nav th:replace="base :: main-navbar"></nav>
+<div class="container p-5 bg-light">
 
-<form action="#"
-      th:action="@{/process}"
-      th:object="${employee}"
-      method="post">
+    <div class="emptySpace"></div>
+    <h2 class="text-center">Update or Add Department</h2>
+    <div class="col-md-6 col-md-offset-3">
+        <form action="#"
+              enctype="multipart/form-data"
+              method="post"
+              th:action="@{/process}" th:object="${employee}">
 
     <input type="hidden" th:field="*{id}" />
 
-    Department:<select th:field="*{department}" class="form-control input-md">
+    <label>Department:</label><select th:field="*{department}" class="form-control input-md">
     <option th:each="option: ${departments}"
             th:value="${option.id}">[[${option.title}]]</option>
 </select><br/>
 
-   Name :<input type="text" th:field="*{name}" />
+  <label>Name :</label> <input type="text" th:field="*{name}" />
     <span th:if="${#fields.hasErrors('name')}"
           th:errors="*{name}"></span><br/>
 
-    Jobtitle :<input type="text" th:field="*{jobtitle}" />
+    <label>Jobtitle :</label><input type="text" th:field="*{jobtitle}" />
     <span th:if="${#fields.hasErrors('jobtitle')}"
           th:errors="*{jobtitle}"></span><br/>
 
-    Name of department :<input type="text" th:field="*{nameofdepartment}" />
+    <label>Name of department</label> :<input type="text" th:field="*{nameofdepartment}" />
     <span th:if="${#fields.hasErrors('nameofdepartment')}"
           th:errors="*{nameofdepartment}"></span><br/>
 
-    <input type="submit" value="Submit" />
-</form>
+    <input type="file" name="file"/><br/>
+    <input class="btn btn-info btn-sm" type="submit" value="Submit"/>
 
+</form>
+    </div>
+
+    <footer th:replace="base :: footer"></footer>
+    <div class="space"></div>
+
+</div> <!-- end container -->
+<div th:replace="base :: scripts"></div>
 </body>
 </html>

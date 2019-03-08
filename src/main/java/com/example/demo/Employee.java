@@ -23,9 +23,19 @@ public class Employee {
     @Size(min=10)
     private String nameofdepartment;
 
+    private String headshot;
+
 
     @ManyToOne
     private Department department;
+
+    public String getHeadshot() {
+        return headshot;
+    }
+
+    public void setHeadshot(String headshot) {
+        this.headshot = headshot;
+    }
 
     public long getId() {
         return id;
