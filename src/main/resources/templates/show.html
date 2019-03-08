@@ -16,6 +16,10 @@ Jobtitle : <span th:text="${employee.jobtitle}"></span><br/>
 <a th:href="@{/delete/{id}(id=${employee.id})}">Delete this employee</a>
 
 </div>
+<footer th:replace="base :: footer"></footer>
+<div class="space"></div>
 
+</div> <!-- end container -->
+<div th:replace="base :: scripts"></div>
 </body>
 </html>
