@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Show</title>
+</head>
+<body>
+
+<a href="/">Show All Employees</a><br/>
+Department :<span th:text="${employee.department.title}" ></span><br />
+Name : <span th:text="${employee.name}"></span><br/>
+Jobtitle : <span th:text="${employee.jobtitle}"></span><br/>
+
+Nameofdepartment : <span th:text="${employee.nameofdepartment}"></span><br/>
+
+<a th:href="@{/delete/{id}(id=${employee.id})}">Delete this employee</a>
+
+</body>
+</html>
