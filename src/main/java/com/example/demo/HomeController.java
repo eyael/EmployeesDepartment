@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,10 +11,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private UserService userService;
+
+
     @Autowired
     DepartmentRepository departmentRepository;
 
@@ -23,6 +30,38 @@ public class HomeController {
     @Autowired
     CloudinaryConfig cloudc;
 
+    @GetMapping("/register")
+    public String showRegistrationPage(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("employee",new Employee());
+        return "registration";
+    }
+    @PostMapping ("/register")
+    public String processRegistrationPage (@Valid
+                                           @ModelAttribute("user") User user, BindingResult result,Model model){
+        model.addAttribute("user",user);
+        if (result.hasErrors())
+        {
+            return "registration";
+        }
+        else{
+            userService.saveUser(user);
+            model.addAttribute("message", "User Account Created");
+        }
+        return "login";
+    }
+    @RequestMapping("/index")
+    public String secure(Principal principal, Model model){
+        User myuser = ((CustomUserDetails)((UsernamePasswordAuthenticationToken) principal)
+                .getPrincipal()).getUser();
+        model.addAttribute("myuser",myuser);
+        return "index";
+
+    }
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     @RequestMapping("/")
     public String listEmployees(Model model){
